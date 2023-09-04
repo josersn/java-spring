@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class SpecialtyDTO {
     private String id;
     private String name;

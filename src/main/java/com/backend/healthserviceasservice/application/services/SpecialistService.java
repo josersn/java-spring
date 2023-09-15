@@ -6,6 +6,7 @@ import com.backend.healthserviceasservice.domain.repositories.SpecialistReposito
 import com.backend.healthserviceasservice.domain.repositories.SpecialtyRepository;
 import com.backend.healthserviceasservice.infrastructure.modelRequest.SpecialistRequest;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.jdbc.Expectation;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
@@ -20,7 +21,12 @@ public class SpecialistService {
     public Specialist createSpecialist(SpecialistRequest specialistRequest)  {
 
         Optional<Specialty> specialty = specialtyRepository.findById(specialistRequest.getSpecialtyId());
+
+        if(!specialty.isPresent()) {
+            throw new RuntimeException("Especialidade não encontrada.");
+        }
         Specialist specialist = Specialist.create(specialistRequest.getName());
+        specialist.setSpecialty(specialty.get());
         specialistRepository.save(specialist);
 
         return specialist;

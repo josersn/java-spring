@@ -22,9 +22,10 @@ public class SpecialistService {
 
         Optional<Specialty> specialty = specialtyRepository.findById(specialistRequest.getSpecialtyId());
 
-        if(!specialty.isPresent()) {
+        if(specialty.isEmpty()) {
             throw new RuntimeException("Especialidade não encontrada.");
         }
+
         Specialist specialist = Specialist.create(specialistRequest.getName());
         specialist.setSpecialty(specialty.get());
         specialistRepository.save(specialist);

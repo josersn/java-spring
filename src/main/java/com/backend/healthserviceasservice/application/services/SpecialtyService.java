@@ -4,6 +4,7 @@ import com.backend.healthserviceasservice.application.dtos.specialty.SpecialtyDT
 import com.backend.healthserviceasservice.domain.entities.Specialty;
 import com.backend.healthserviceasservice.domain.repositories.SpecialtyRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +25,7 @@ public class SpecialtyService {
         return specialty;
     }
 
+    @Cacheable("specialties")
     public List<SpecialtyDTO> listSpecialty() {
         List<Specialty> specialties = specialtyRepository.findAll();
 

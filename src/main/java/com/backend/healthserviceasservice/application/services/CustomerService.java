@@ -2,15 +2,12 @@ package com.backend.healthserviceasservice.application.services;
 
 import com.backend.healthserviceasservice.application.dtos.customer.CustomerDTO;
 import com.backend.healthserviceasservice.domain.entities.Customer;
-import com.backend.healthserviceasservice.domain.enums.GenderEnum;
 import com.backend.healthserviceasservice.domain.repositories.CustomerRepository;
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
+import com.backend.healthserviceasservice.infrastructure.message.kafka.KafkaProducer;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
@@ -19,7 +16,9 @@ public class CustomerService {
 
 
     private final CustomerRepository customerRepository;
+    private final KafkaProducer kafkaProducer;
 
+    @Transactional
     public Customer createCustomer(CustomerDTO customerDTO) {
 
         Optional<Customer> customerAlreadyExists = customerRepository.findByCpf(customerDTO.getCpf());
@@ -36,7 +35,11 @@ public class CustomerService {
 
         Customer customer = Customer.create(customerDTO);
 
-        return customerRepository.save(customer);
+        customerRepository.save(customer);
+
+        kafkaProducer.producer("email", customer.getEmail());
+
+        return  customer;
     }
 
 }

@@ -50,6 +50,12 @@ public class Customer {
     @Column(name = "phone")
     private String phone;
 
+    @Column(name = "verifyEmail", nullable = false)
+    private Boolean verifyEmail;
+
+    @Column(name = "verifyPhone", nullable = false)
+    private Boolean verifyPhone;
+
     @Column(name = "isActive", nullable = false)
     private Boolean isActive;
 
@@ -80,6 +86,8 @@ public class Customer {
         this.email = email;
         this.password = password;
         this.isActive = true;
+        this.verifyEmail = false;
+        this.verifyPhone = false;
         this.createdAt = now;
         this.updatedAt = now;
     }

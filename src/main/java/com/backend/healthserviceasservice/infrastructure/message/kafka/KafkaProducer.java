@@ -4,7 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
+
+import org.springframework.messaging.Message;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.ObjectError;
 
 @RequiredArgsConstructor
 @Component
@@ -16,6 +20,8 @@ public class KafkaProducer {
 
     public void producer(String topic, String message) {
         logger.info("Publish in topic: " + topic  + " |  message:  -> {}", message);
+
+
         this.kafkaTemplate.send(topic, message);
     }
 
